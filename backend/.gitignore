@@ -19,4 +19,7 @@ build/
 credentials/
 *.db
 *.sqlite
+<<<<<<< HEAD
 exchange_code.py
+=======
+>>>>>>> b083b2d (set up flask backend with postgresql)

@@ -12,7 +12,10 @@ google-api-python-client==2.116.0
 msal==1.26.0
 pytest==7.4.3
 pytest-flask==1.3.0
+<<<<<<< HEAD
 pytest-cov==4.1.0
 flake8==7.0.0
+=======
+>>>>>>> b083b2d (set up flask backend with postgresql)
 gunicorn==21.2.0
 bcrypt==4.1.2
