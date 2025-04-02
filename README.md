@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # GradeSync Pro
 
 Track your grades and get email alerts when they drop.
@@ -40,3 +41,6 @@ Add assignments and grades
 App calculates your final grade
 Get email if grade drops below target
 
+=======
+# GradeSync-Pro
+>>>>>>> 467074f (initial commit)
