@@ -1,6 +1,11 @@
 import pytest
+<<<<<<< HEAD
 from application import create_app, db
 from application.models.user import User
+=======
+from app import create_app, db
+from app.models.user import User
+>>>>>>> 22c8b51 (backend deployment config and tests)
 
 @pytest.fixture
 def app():
@@ -26,6 +31,10 @@ def test_register(client):
     assert 'access_token' in response.json
 
 def test_login(client):
+<<<<<<< HEAD
+=======
+    # First register
+>>>>>>> 22c8b51 (backend deployment config and tests)
     client.post('/api/auth/register', json={
         'email': 'test@example.com',
         'password': 'password123',
@@ -33,6 +42,10 @@ def test_login(client):
         'last_name': 'User'
     })
 
+<<<<<<< HEAD
+=======
+    # Then login
+>>>>>>> 22c8b51 (backend deployment config and tests)
     response = client.post('/api/auth/login', json={
         'email': 'test@example.com',
         'password': 'password123'

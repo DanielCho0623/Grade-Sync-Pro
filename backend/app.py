@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import os
 from application import create_app
 
@@ -11,3 +12,11 @@ if __name__ == '__main__':
     # Debug mode based on environment
     debug = config_name == 'development'
     app.run(debug=debug, host='0.0.0.0', port=port)
+=======
+from app import create_app
+
+app = create_app('development')
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
+>>>>>>> 22c8b51 (backend deployment config and tests)
