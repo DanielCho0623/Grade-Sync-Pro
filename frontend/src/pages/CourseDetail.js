@@ -17,7 +17,10 @@ function CourseDetail() {
 
   useEffect(() => {
     loadCourse();
+<<<<<<< HEAD
     // eslint-disable-next-line react-hooks/exhaustive-deps
+=======
+>>>>>>> 7cd308a (implement course management ui)
   }, [id]);
 
   const loadCourse = async () => {
