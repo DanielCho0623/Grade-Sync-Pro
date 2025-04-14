@@ -23,10 +23,13 @@
       "dest": "/manifest.json"
     },
     {
+<<<<<<< HEAD
       "src": "/logo(.*).png",
       "dest": "/logo$1.png"
     },
     {
+=======
+>>>>>>> dfb0b0a (add deployment configs)
       "src": "/(.*)",
       "dest": "/index.html"
     }
