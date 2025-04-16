@@ -13,18 +13,6 @@ notifications_bp = Blueprint('notifications', __name__)
 @notifications_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_notifications():
-    """Get all notifications for the current user"""
-    user_id = get_jwt_identity()
-    notifications = Notification.query.filter_by(user_id=user_id).order_by(
-        Notification.created_at.desc()
-    ).all()
-
-    return jsonify([n.to_dict() for n in notifications]), 200
-
-@notifications_bp.route('/<int:notification_id>/read', methods=['PUT'])
-@jwt_required()
-def mark_as_read(notification_id):
-    """Mark a notification as read"""
     user_id = get_jwt_identity()
     notification = Notification.query.filter_by(
         id=notification_id,
@@ -45,10 +33,6 @@ def mark_as_read(notification_id):
 @notifications_bp.route('/send-grade-alert/<int:course_id>', methods=['POST'])
 @jwt_required()
 def send_grade_alert(course_id):
-    """
-    Send a grade alert email for a specific course.
-    This endpoint allows manual triggering of grade alerts.
-    """
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
@@ -56,13 +40,11 @@ def send_grade_alert(course_id):
     if not course:
         return jsonify({'error': 'Course not found'}), 404
 
-    # Calculate current grade
     grade_data = GradeCalculator.calculate_course_grade(course)
 
     if grade_data.get('error'):
         return jsonify({'error': grade_data['error']}), 400
 
-    # Determine which email services to use
     data = request.get_json() or {}
     use_gmail = data.get('use_gmail', True)
     use_outlook = data.get('use_outlook', True)
@@ -70,7 +52,6 @@ def send_grade_alert(course_id):
 
     sent_via = []
 
-    # Send via Gmail
     if use_gmail:
         try:
             gmail_service = GmailService()
@@ -79,7 +60,6 @@ def send_grade_alert(course_id):
         except Exception as e:
             current_app.logger.error(f"Gmail notification error: {str(e)}")
 
-    # Send via Outlook
     if use_outlook:
         try:
             outlook_service = OutlookService()
@@ -94,7 +74,6 @@ def send_grade_alert(course_id):
             'message': 'Check email service configuration'
         }), 500
 
-    # Log notification in database
     notification = Notification(
         user_id=user_id,
         notification_type='grade_alert',
@@ -115,10 +94,6 @@ def send_grade_alert(course_id):
 @notifications_bp.route('/auto-check', methods=['POST'])
 @jwt_required()
 def auto_check_grades():
-    """
-    Automatically check all courses and send alerts if grades are below threshold.
-    This can be triggered manually or by a scheduled job.
-    """
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
     courses = Course.query.filter_by(user_id=user_id).all()
@@ -134,7 +109,6 @@ def auto_check_grades():
 
         projected_grade = grade_data.get('projected_final_grade')
 
-        # Send alert if grade is below threshold or target
         if projected_grade and (projected_grade < threshold or projected_grade < course.target_grade):
             gmail_service = GmailService()
             outlook_service = OutlookService()

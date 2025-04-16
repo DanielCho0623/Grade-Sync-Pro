@@ -3,102 +3,11 @@ from app.models.grade import Grade
 from app.models.syllabus_weight import SyllabusWeight
 
 class GradeCalculator:
-    """
-    Automated grade calculation engine that computes final course grades
-    based on syllabus-defined weights and assignment grades.
-    """
 
     @staticmethod
     def calculate_category_average(assignments, category):
-        """Calculate average for a specific assignment category"""
-        category_assignments = [a for a in assignments if a.category == category and a.grade]
-
-        if not category_assignments:
-            return None
-
-        total_points = 0
-        earned_points = 0
-
-        for assignment in category_assignments:
-            if assignment.grade and assignment.grade.points_earned is not None:
-                total_points += assignment.max_points
-                earned_points += assignment.grade.points_earned
-
-        if total_points == 0:
-            return None
-
-        return (earned_points / total_points) * 100
-
-    @staticmethod
-    def calculate_course_grade(course):
-        """
         Calculate the final grade for a course based on syllabus weights.
         Returns a dictionary with detailed grade breakdown.
-        """
-        syllabus_weights = course.syllabus_weights
-        assignments = course.assignments
-
-        if not syllabus_weights:
-            return {
-                'final_grade': None,
-                'letter_grade': None,
-                'breakdown': [],
-                'error': 'No syllabus weights defined for this course'
-            }
-
-        # Verify weights sum to 100%
-        total_weight = sum(w.weight for w in syllabus_weights)
-        if abs(total_weight - 100.0) > 0.01:
-            return {
-                'final_grade': None,
-                'letter_grade': None,
-                'breakdown': [],
-                'error': f'Syllabus weights must sum to 100% (currently {total_weight}%)'
-            }
-
-        breakdown = []
-        weighted_grade = 0.0
-        total_weight_applied = 0.0
-
-        for weight in syllabus_weights:
-            category_avg = GradeCalculator.calculate_category_average(assignments, weight.category)
-
-            category_data = {
-                'category': weight.category,
-                'weight': weight.weight,
-                'average': category_avg,
-                'weighted_contribution': None
-            }
-
-            if category_avg is not None:
-                contribution = (category_avg * weight.weight) / 100
-                category_data['weighted_contribution'] = contribution
-                weighted_grade += contribution
-                total_weight_applied += weight.weight
-
-            breakdown.append(category_data)
-
-        # Calculate final grade (only based on completed categories)
-        if total_weight_applied > 0:
-            # Adjust for partial completion
-            final_grade = weighted_grade
-            projected_final_grade = (weighted_grade / total_weight_applied) * 100 if total_weight_applied < 100 else weighted_grade
-        else:
-            final_grade = None
-            projected_final_grade = None
-
-        return {
-            'final_grade': round(final_grade, 2) if final_grade is not None else None,
-            'projected_final_grade': round(projected_final_grade, 2) if projected_final_grade is not None else None,
-            'letter_grade': GradeCalculator.get_letter_grade(projected_final_grade) if projected_final_grade else None,
-            'breakdown': breakdown,
-            'total_weight_applied': total_weight_applied,
-            'completion_percentage': round((total_weight_applied / 100) * 100, 2)
-        }
-
-    @staticmethod
-    def get_letter_grade(percentage):
-        """Convert percentage to letter grade"""
         if percentage is None:
             return None
 
@@ -129,9 +38,6 @@ class GradeCalculator:
 
     @staticmethod
     def calculate_grade_needed(course, target_grade):
-        """
-        Calculate what grade is needed on remaining assignments to reach target grade.
-        """
         current_grade_data = GradeCalculator.calculate_course_grade(course)
 
         if current_grade_data['final_grade'] is None:

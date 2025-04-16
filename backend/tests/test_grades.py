@@ -14,7 +14,10 @@ def test_get_letter_grade():
 
 def test_calculate_category_average():
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     # This would require mock data - simplified test
 >>>>>>> 22c8b51 (backend deployment config and tests)
+=======
+>>>>>>> 4990274 (clean up code)
     assert GradeCalculator.get_letter_grade(90) == 'A-'

@@ -15,30 +15,8 @@ class Course(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relationships
     user = db.relationship('User', back_populates='courses')
     assignments = db.relationship('Assignment', back_populates='course', cascade='all, delete-orphan')
     syllabus_weights = db.relationship('SyllabusWeight', back_populates='course', cascade='all, delete-orphan')
 
     def to_dict(self, include_assignments=False, include_weights=False):
-        """Convert course to dictionary"""
-        data = {
-            'id': self.id,
-            'user_id': self.user_id,
-            'brightspace_course_id': self.brightspace_course_id,
-            'course_code': self.course_code,
-            'course_name': self.course_name,
-            'semester': self.semester,
-            'year': self.year,
-            'target_grade': self.target_grade,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
-            'updated_at': self.updated_at.isoformat() if self.updated_at else None
-        }
-
-        if include_assignments:
-            data['assignments'] = [a.to_dict() for a in self.assignments]
-
-        if include_weights:
-            data['syllabus_weights'] = [w.to_dict() for w in self.syllabus_weights]
-
-        return data

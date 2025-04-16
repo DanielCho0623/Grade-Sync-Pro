@@ -4,10 +4,6 @@ import random
 from flask import current_app
 
 class BrightspaceService:
-    """
-    Service for integrating with Brightspace API.
-    Falls back to synthetic data if Brightspace is not configured.
-    """
 
     def __init__(self):
         self.base_url = current_app.config.get('BRIGHTSPACE_URL')
@@ -16,15 +12,10 @@ class BrightspaceService:
         self.use_synthetic = not all([self.base_url, self.client_id, self.client_secret])
 
     def get_courses(self, user_id):
-        """
-        Fetch courses for a user from Brightspace.
-        Falls back to synthetic data if not configured.
-        """
         if self.use_synthetic:
             return self._generate_synthetic_courses()
 
         try:
-            # Real Brightspace API implementation
             headers = self._get_auth_headers()
             response = requests.get(
                 f"{self.base_url}/d2l/api/lp/1.0/enrollments/users/{user_id}/orgUnits/",
@@ -38,10 +29,6 @@ class BrightspaceService:
             return self._generate_synthetic_courses()
 
     def get_assignments(self, course_id):
-        """
-        Fetch assignments for a course from Brightspace.
-        Falls back to synthetic data if not configured.
-        """
         if self.use_synthetic:
             return self._generate_synthetic_assignments(course_id)
 
@@ -59,10 +46,6 @@ class BrightspaceService:
             return self._generate_synthetic_assignments(course_id)
 
     def get_grades(self, course_id, user_id):
-        """
-        Fetch grades for a course from Brightspace.
-        Falls back to synthetic data if not configured.
-        """
         if self.use_synthetic:
             return self._generate_synthetic_grades()
 
@@ -80,36 +63,12 @@ class BrightspaceService:
             return self._generate_synthetic_grades()
 
     def _get_auth_headers(self):
-        """Get authentication headers for Brightspace API"""
-        # Implementation would include OAuth token retrieval
-        return {
-            'Authorization': f'Bearer {self._get_access_token()}',
-            'Content-Type': 'application/json'
-        }
-
-    def _get_access_token(self):
-        """Get OAuth access token from Brightspace"""
-        # Placeholder for OAuth implementation
         pass
 
     def _parse_courses(self, data):
-        """Parse Brightspace course data"""
-        # Implementation would parse actual Brightspace response
-        pass
-
-    def _parse_assignments(self, data):
-        """Parse Brightspace assignment data"""
-        # Implementation would parse actual Brightspace response
         pass
 
     def _parse_grades(self, data):
-        """Parse Brightspace grade data"""
-        # Implementation would parse actual Brightspace response
-        pass
-
-    # Synthetic data generators for testing/development
-    def _generate_synthetic_courses(self):
-        """Generate synthetic course data for testing"""
         current_year = datetime.now().year
         courses = [
             {
@@ -137,48 +96,6 @@ class BrightspaceService:
         return courses
 
     def _generate_synthetic_assignments(self, course_id):
-        """Generate synthetic assignment data for testing"""
-        categories = ['Homework', 'Exam', 'Project', 'Quiz']
-        assignments = []
-
-        # Generate homework assignments
-        for i in range(1, 6):
-            assignments.append({
-                'brightspace_assignment_id': f'HW{i}',
-                'name': f'Homework {i}',
-                'category': 'Homework',
-                'max_points': 100,
-                'due_date': datetime.now() + timedelta(days=i*7),
-                'description': f'Assignment covering topics from week {i}'
-            })
-
-        # Generate exams
-        for i in range(1, 3):
-            assignments.append({
-                'brightspace_assignment_id': f'EXAM{i}',
-                'name': f'Midterm Exam {i}',
-                'category': 'Exam',
-                'max_points': 200,
-                'due_date': datetime.now() + timedelta(days=i*30),
-                'description': f'Comprehensive exam covering chapters 1-{i*5}'
-            })
-
-        # Generate projects
-        for i in range(1, 3):
-            assignments.append({
-                'brightspace_assignment_id': f'PROJ{i}',
-                'name': f'Course Project {i}',
-                'category': 'Project',
-                'max_points': 150,
-                'due_date': datetime.now() + timedelta(days=i*45),
-                'description': f'Major project implementing course concepts'
-            })
-
-        return assignments
-
-    def _generate_synthetic_grades(self):
-        """Generate synthetic grade data for testing"""
-        # Generates random grades for demonstration
         grades = {}
 
         for i in range(1, 6):

@@ -257,7 +257,7 @@ Install the following on your system:
 
 4. **Add Environment Variables**
    - Add all variables from `.env`
-   - Railway will provide `DATABASE_URL` automatically
+   - Railway will provide `DATABASE_URL` dynamically
 
 5. **Deploy**
    - Railway auto-deploys on push to main branch
@@ -317,7 +317,7 @@ Install the following on your system:
    - Save
 
 7. **View Calculations**
-   - Grade automatically calculated
+   - Grade dynamically calculated
    - View breakdown by category
 
 8. **Test Email Alerts**
@@ -356,7 +356,7 @@ For additional help:
 
 ## Next Steps
 
-1. Configure automated email checks
+1. Configure email checks
 2. Set up Brightspace sync schedule
 3. Customize grade calculation rules
 4. Add more courses and assignments

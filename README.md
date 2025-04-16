@@ -48,16 +48,16 @@ Get email if grade drops below target
 =======
 # GradeSync Pro
 
-A full-stack web application for automated grade tracking and monitoring with Brightspace integration, syllabus-defined weights, and real-time email notifications.
+A full-stack web application for grade tracking and monitoring with Brightspace integration, syllabus-defined weights, and real-time email notifications.
 
 ## Features
 
 - **Full-Stack Architecture**: React.js frontend with Python Flask backend and PostgreSQL database
 - **JWT Authentication**: Secure user authentication and authorization
 - **Brightspace Integration**: Sync courses, assignments, and grades from Brightspace (with synthetic data fallback)
-- **Automated Grade Calculation**: Calculate final grades based on syllabus-defined category weights
+- **grade Calculation**: Calculate final grades based on syllabus-defined category weights
 - **Real-Time Monitoring**: Track grade progress and project final grades
-- **Email Notifications**: Automated alerts via Gmail and Outlook APIs when grades fall below targets
+- **Email Notifications**: alerts via Gmail and Outlook APIs when grades fall below targets
 - **Course Management**: Add courses, define syllabus weights, manage assignments
 - **Grade Analytics**: View detailed grade breakdowns by category
 - **Responsive UI**: Modern, intuitive interface built with React
@@ -86,7 +86,7 @@ A full-stack web application for automated grade tracking and monitoring with Br
 
 ### DevOps
 - GitHub Actions for CI/CD
-- Automated testing
+- testing
 - Docker support
 
 ## Project Structure
@@ -281,7 +281,7 @@ Body: {
 1. Connect your GitHub repository to Railway
 2. Select the `backend` directory as the root
 3. Add environment variables in Railway dashboard
-4. Railway will automatically deploy using the `Procfile`
+4. Railway will dynamically deploy using the `Procfile`
 
 ### Frontend (Vercel)
 
@@ -314,7 +314,7 @@ Body: {
 1. **Register/Login**: Create an account or log in
 2. **Add Courses**: Create courses for the current semester
 3. **Define Weights**: Set up syllabus weights for each category (Homework, Exams, etc.)
-4. **Sync from Brightspace**: Import assignments and grades automatically
+4. **Sync from Brightspace**: Import assignments and grades dynamically
 5. **Manual Entry**: Add assignments and grades manually if needed
 6. **Monitor Grades**: View real-time grade calculations and projections
 7. **Email Alerts**: Receive notifications when grades fall below targets

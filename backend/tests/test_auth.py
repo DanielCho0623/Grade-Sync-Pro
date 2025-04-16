@@ -32,9 +32,12 @@ def test_register(client):
 
 def test_login(client):
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     # First register
 >>>>>>> 22c8b51 (backend deployment config and tests)
+=======
+>>>>>>> 4990274 (clean up code)
     client.post('/api/auth/register', json={
         'email': 'test@example.com',
         'password': 'password123',
@@ -43,9 +46,12 @@ def test_login(client):
     })
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     # Then login
 >>>>>>> 22c8b51 (backend deployment config and tests)
+=======
+>>>>>>> 4990274 (clean up code)
     response = client.post('/api/auth/login', json={
         'email': 'test@example.com',
         'password': 'password123'
