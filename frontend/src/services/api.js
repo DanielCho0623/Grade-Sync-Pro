@@ -2,6 +2,7 @@ import axios from 'axios';
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 =======
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
@@ -9,6 +10,9 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 =======
 const API_URL = process.env.REACT_APP_API_URL || 'http:
 >>>>>>> 4990274 (clean up code)
+=======
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+>>>>>>> 5aa3e2d (restore function implementations)
 
 const api = axios.create({
   baseURL: API_URL,

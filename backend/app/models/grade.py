@@ -17,3 +17,14 @@ class Grade(db.Model):
     assignment = db.relationship('Assignment', back_populates='grade')
 
     def to_dict(self):
+        return {
+            'id': self.id,
+            'assignment_id': self.assignment_id,
+            'points_earned': self.points_earned,
+            'percentage': self.percentage,
+            'letter_grade': self.letter_grade,
+            'graded_date': self.graded_date.isoformat() if self.graded_date else None,
+            'feedback': self.feedback,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }

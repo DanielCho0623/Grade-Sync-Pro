@@ -1,6 +1,9 @@
 frontend/.env
 frontend/package-lock.json
+<<<<<<< HEAD
 backend/temp_credentials.json
 frontend/frontend.log
 backend/backend.log
 *.log
+=======
+>>>>>>> 5aa3e2d (restore function implementations)
