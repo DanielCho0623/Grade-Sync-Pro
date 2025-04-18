@@ -14,6 +14,16 @@ courses_bp = Blueprint('courses', __name__)
 @jwt_required()
 def get_courses():
     user_id = get_jwt_identity()
+    courses = Course.query.filter_by(user_id=user_id).all()
+
+    return jsonify({
+        'courses': [course.to_dict() for course in courses]
+    }), 200
+
+@courses_bp.route('/', methods=['POST'])
+@jwt_required()
+def create_course():
+    user_id = get_jwt_identity()
     data = request.get_json()
 
     if not data.get('course_code') or not data.get('course_name'):
@@ -40,6 +50,19 @@ def get_courses():
 @courses_bp.route('/<int:course_id>', methods=['GET'])
 @jwt_required()
 def get_course(course_id):
+    user_id = get_jwt_identity()
+    course = Course.query.filter_by(id=course_id, user_id=user_id).first()
+
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+
+    return jsonify({
+        'course': course.to_dict(include_assignments=True, include_weights=True)
+    }), 200
+
+@courses_bp.route('/<int:course_id>', methods=['PUT'])
+@jwt_required()
+def update_course(course_id):
     user_id = get_jwt_identity()
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
@@ -75,70 +98,14 @@ def delete_course(course_id):
     if not course:
         return jsonify({'error': 'Course not found'}), 404
 
-    data = request.get_json()
-
-    if not data.get('category') or data.get('weight') is None:
-        return jsonify({'error': 'Category and weight are required'}), 400
-
-    weight = SyllabusWeight.query.filter_by(
-        course_id=course_id,
-        category=data['category']
-    ).first()
-
-    if weight:
-        weight.weight = data['weight']
-        weight.description = data.get('description')
-    else:
-        weight = SyllabusWeight(
-            course_id=course_id,
-            category=data['category'],
-            weight=data['weight'],
-            description=data.get('description')
-        )
-        db.session.add(weight)
-
+    db.session.delete(course)
     db.session.commit()
 
-    return jsonify({
-        'message': 'Syllabus weight saved successfully',
-        'weight': weight.to_dict()
-    }), 201
+    return jsonify({'message': 'Course deleted successfully'}), 200
 
-@courses_bp.route('/<int:course_id>/weights/<int:weight_id>', methods=['DELETE'])
+@courses_bp.route('/<int:course_id>/sync', methods=['POST'])
 @jwt_required()
-def delete_syllabus_weight(course_id, weight_id):
-    user_id = get_jwt_identity()
-    course = Course.query.filter_by(id=course_id, user_id=user_id).first()
-
-    if not course:
-        return jsonify({'error': 'Course not found'}), 404
-
-    data = request.get_json()
-
-    if not data.get('name') or data.get('max_points') is None:
-        return jsonify({'error': 'Name and max_points are required'}), 400
-
-    assignment = Assignment(
-        course_id=course_id,
-        name=data['name'],
-        category=data.get('category', 'Homework'),
-        max_points=data['max_points'],
-        due_date=data.get('due_date'),
-        description=data.get('description'),
-        brightspace_assignment_id=data.get('brightspace_assignment_id')
-    )
-
-    db.session.add(assignment)
-    db.session.commit()
-
-    return jsonify({
-        'message': 'Assignment added successfully',
-        'assignment': assignment.to_dict()
-    }), 201
-
-@courses_bp.route('/<int:course_id>/assignments/<int:assignment_id>', methods=['DELETE'])
-@jwt_required()
-def delete_assignment(course_id, assignment_id):
+def sync_course(course_id):
     user_id = get_jwt_identity()
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
@@ -203,7 +170,128 @@ def calculate_course_grade(course_id):
     if not course:
         return jsonify({'error': 'Course not found'}), 404
 
+    grade_data = GradeCalculator.calculate_course_grade(course)
+
+    return jsonify(grade_data), 200
+
+@courses_bp.route('/<int:course_id>/grade-needed', methods=['GET'])
+@jwt_required()
+def calculate_grade_needed(course_id):
+    user_id = get_jwt_identity()
+    course = Course.query.filter_by(id=course_id, user_id=user_id).first()
+
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+
     target_grade = request.args.get('target', course.target_grade, type=float)
     needed_data = GradeCalculator.calculate_grade_needed(course, target_grade)
 
     return jsonify(needed_data), 200
+
+@courses_bp.route('/<int:course_id>/weights', methods=['POST'])
+@jwt_required()
+def add_syllabus_weight(course_id):
+    user_id = get_jwt_identity()
+    course = Course.query.filter_by(id=course_id, user_id=user_id).first()
+
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+
+    data = request.get_json()
+
+    if not data.get('category') or data.get('weight') is None:
+        return jsonify({'error': 'Category and weight are required'}), 400
+
+    weight = SyllabusWeight.query.filter_by(
+        course_id=course_id,
+        category=data['category']
+    ).first()
+
+    if weight:
+        weight.weight = data['weight']
+        weight.description = data.get('description')
+    else:
+        weight = SyllabusWeight(
+            course_id=course_id,
+            category=data['category'],
+            weight=data['weight'],
+            description=data.get('description')
+        )
+        db.session.add(weight)
+
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Syllabus weight saved successfully',
+        'weight': weight.to_dict()
+    }), 201
+
+@courses_bp.route('/<int:course_id>/weights/<int:weight_id>', methods=['DELETE'])
+@jwt_required()
+def delete_syllabus_weight(course_id, weight_id):
+    user_id = get_jwt_identity()
+    course = Course.query.filter_by(id=course_id, user_id=user_id).first()
+
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+
+    weight = SyllabusWeight.query.filter_by(id=weight_id, course_id=course_id).first()
+
+    if not weight:
+        return jsonify({'error': 'Weight not found'}), 404
+
+    db.session.delete(weight)
+    db.session.commit()
+
+    return jsonify({'message': 'Weight deleted successfully'}), 200
+
+@courses_bp.route('/<int:course_id>/assignments', methods=['POST'])
+@jwt_required()
+def add_assignment(course_id):
+    user_id = get_jwt_identity()
+    course = Course.query.filter_by(id=course_id, user_id=user_id).first()
+
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+
+    data = request.get_json()
+
+    if not data.get('name') or data.get('max_points') is None:
+        return jsonify({'error': 'Name and max_points are required'}), 400
+
+    assignment = Assignment(
+        course_id=course_id,
+        name=data['name'],
+        category=data.get('category', 'Homework'),
+        max_points=data['max_points'],
+        due_date=data.get('due_date'),
+        description=data.get('description'),
+        brightspace_assignment_id=data.get('brightspace_assignment_id')
+    )
+
+    db.session.add(assignment)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Assignment added successfully',
+        'assignment': assignment.to_dict()
+    }), 201
+
+@courses_bp.route('/<int:course_id>/assignments/<int:assignment_id>', methods=['DELETE'])
+@jwt_required()
+def delete_assignment(course_id, assignment_id):
+    user_id = get_jwt_identity()
+    course = Course.query.filter_by(id=course_id, user_id=user_id).first()
+
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+
+    assignment = Assignment.query.filter_by(id=assignment_id, course_id=course_id).first()
+
+    if not assignment:
+        return jsonify({'error': 'Assignment not found'}), 404
+
+    db.session.delete(assignment)
+    db.session.commit()
+
+    return jsonify({'message': 'Assignment deleted successfully'}), 200
