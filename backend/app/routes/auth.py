@@ -2,6 +2,11 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from app import db
 from app.models.user import User
+from app.models.course import Course
+from app.models.assignment import Assignment
+from app.models.syllabus_weight import SyllabusWeight
+from app.models.grade import Grade
+from app.services.brightspace_service import BrightspaceService
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -27,6 +32,8 @@ def register():
     db.session.add(user)
     db.session.commit()
 
+    _import_synthetic_courses_for_user(user.id)
+
     access_token = create_access_token(identity=user.id)
 
     return jsonify({
@@ -34,6 +41,75 @@ def register():
         'user': user.to_dict(),
         'access_token': access_token
     }), 201
+
+def _import_synthetic_courses_for_user(user_id):
+    brightspace = BrightspaceService()
+    synthetic_courses = brightspace.get_courses(user_id)
+
+    for course_data in synthetic_courses:
+        course = Course(
+            user_id=user_id,
+            brightspace_course_id=course_data['brightspace_course_id'],
+            course_code=course_data['course_code'],
+            course_name=course_data['course_name'],
+            semester=course_data.get('semester'),
+            year=course_data.get('year'),
+            target_grade=85.0
+        )
+
+        db.session.add(course)
+        db.session.flush()
+
+        assignments_data = brightspace.get_assignments(course_data['brightspace_course_id'])
+
+        for assignment_data in assignments_data:
+            assignment = Assignment(
+                course_id=course.id,
+                brightspace_assignment_id=assignment_data['brightspace_assignment_id'],
+                name=assignment_data['name'],
+                category=assignment_data['category'],
+                max_points=assignment_data['max_points'],
+                due_date=assignment_data.get('due_date'),
+                description=assignment_data.get('description')
+            )
+            db.session.add(assignment)
+            db.session.flush()
+
+        grades_data = brightspace.get_grades(course_data['brightspace_course_id'], user_id)
+
+        for assignment_id, grade_data in grades_data.items():
+            assignment = Assignment.query.filter_by(
+                course_id=course.id,
+                brightspace_assignment_id=assignment_id
+            ).first()
+
+            if assignment:
+                grade = Grade(
+                    assignment_id=assignment.id,
+                    points_earned=grade_data['points_earned'],
+                    percentage=(grade_data['points_earned'] / assignment.max_points) * 100,
+                    graded_date=grade_data.get('graded_date'),
+                    feedback=grade_data.get('feedback')
+                )
+                db.session.add(grade)
+
+        weights = [
+            {'category': 'Homework', 'weight': 30.0, 'description': 'Weekly homework assignments'},
+            {'category': 'Quiz', 'weight': 20.0, 'description': 'In-class quizzes'},
+            {'category': 'Exam', 'weight': 40.0, 'description': 'Midterm and final exams'},
+            {'category': 'Project', 'weight': 10.0, 'description': 'Course project'}
+        ]
+
+        for weight_data in weights:
+            weight = SyllabusWeight(
+                course_id=course.id,
+                category=weight_data['category'],
+                weight=weight_data['weight'],
+                description=weight_data['description']
+            )
+            db.session.add(weight)
+
+    db.session.commit()
 
 @auth_bp.route('/login', methods=['POST'])
 def login():

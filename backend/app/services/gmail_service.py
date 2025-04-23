@@ -15,10 +15,14 @@ class GmailService:
         self.refresh_token = os.getenv('GMAIL_REFRESH_TOKEN', '')
         self.redirect_uri = os.getenv('GMAIL_REDIRECT_URI', 'http://localhost:5001/api/auth/gmail/callback')
 
-        self.enabled = all([self.client_id, self.client_secret, self.refresh_token])
+        force_synthetic = os.getenv('USE_SYNTHETIC_DATA', 'true').lower() == 'true'
+        self.enabled = not force_synthetic and all([self.client_id, self.client_secret, self.refresh_token])
 
         if not self.enabled:
-            current_app.logger.info("Gmail: Not configured (no OAuth credentials)")
+            if force_synthetic:
+                current_app.logger.info("Gmail: Using stub mode (forced by USE_SYNTHETIC_DATA setting)")
+            else:
+                current_app.logger.info("Gmail: Not configured (no OAuth credentials)")
         else:
             current_app.logger.info("Gmail: OAuth integration enabled")
 

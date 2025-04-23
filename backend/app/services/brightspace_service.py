@@ -12,10 +12,14 @@ class BrightspaceService:
         self.user_id = os.getenv('BRIGHTSPACE_USER_ID', '')
         self.user_key = os.getenv('BRIGHTSPACE_USER_KEY', '')
 
-        self.use_synthetic = not all([self.base_url, self.app_id, self.app_key])
+        force_synthetic = os.getenv('USE_SYNTHETIC_DATA', 'true').lower() == 'true'
+        self.use_synthetic = force_synthetic or not all([self.base_url, self.app_id, self.app_key])
 
         if self.use_synthetic:
-            current_app.logger.info("Brightspace: Using synthetic data (no API credentials configured)")
+            if force_synthetic:
+                current_app.logger.info("Brightspace: Using synthetic data (forced by USE_SYNTHETIC_DATA setting)")
+            else:
+                current_app.logger.info("Brightspace: Using synthetic data (no API credentials configured)")
         else:
             current_app.logger.info("Brightspace: Real API integration enabled")
 
