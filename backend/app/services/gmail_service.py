@@ -18,13 +18,16 @@ class GmailService:
         force_synthetic = os.getenv('USE_SYNTHETIC_DATA', 'true').lower() == 'true'
         self.enabled = not force_synthetic and all([self.client_id, self.client_secret, self.refresh_token])
 
-        if not self.enabled:
-            if force_synthetic:
-                current_app.logger.info("Gmail: Using stub mode (forced by USE_SYNTHETIC_DATA setting)")
+        try:
+            if not self.enabled:
+                if force_synthetic:
+                    current_app.logger.info("Gmail: Using stub mode (forced by USE_SYNTHETIC_DATA setting)")
+                else:
+                    current_app.logger.info("Gmail: Not configured (no OAuth credentials)")
             else:
-                current_app.logger.info("Gmail: Not configured (no OAuth credentials)")
-        else:
-            current_app.logger.info("Gmail: OAuth integration enabled")
+                current_app.logger.info("Gmail: OAuth integration enabled")
+        except RuntimeError:
+            pass
 
     def _get_credentials(self):
         if not self.enabled:

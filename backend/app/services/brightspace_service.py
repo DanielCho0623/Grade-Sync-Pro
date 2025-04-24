@@ -3,6 +3,7 @@ import requests
 from datetime import datetime, timedelta
 import random
 from flask import current_app
+import logging
 
 class BrightspaceService:
     def __init__(self):
@@ -15,13 +16,16 @@ class BrightspaceService:
         force_synthetic = os.getenv('USE_SYNTHETIC_DATA', 'true').lower() == 'true'
         self.use_synthetic = force_synthetic or not all([self.base_url, self.app_id, self.app_key])
 
-        if self.use_synthetic:
-            if force_synthetic:
-                current_app.logger.info("Brightspace: Using synthetic data (forced by USE_SYNTHETIC_DATA setting)")
+        try:
+            if self.use_synthetic:
+                if force_synthetic:
+                    current_app.logger.info("Brightspace: Using synthetic data (forced by USE_SYNTHETIC_DATA setting)")
+                else:
+                    current_app.logger.info("Brightspace: Using synthetic data (no API credentials configured)")
             else:
-                current_app.logger.info("Brightspace: Using synthetic data (no API credentials configured)")
-        else:
-            current_app.logger.info("Brightspace: Real API integration enabled")
+                current_app.logger.info("Brightspace: Real API integration enabled")
+        except RuntimeError:
+            pass
 
     def _get_headers(self):
         return {

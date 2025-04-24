@@ -13,13 +13,16 @@ class OutlookService:
         force_synthetic = os.getenv('USE_SYNTHETIC_DATA', 'true').lower() == 'true'
         self.enabled = not force_synthetic and all([self.client_id, self.client_secret, self.refresh_token])
 
-        if not self.enabled:
-            if force_synthetic:
-                current_app.logger.info("Outlook: Using stub mode (forced by USE_SYNTHETIC_DATA setting)")
+        try:
+            if not self.enabled:
+                if force_synthetic:
+                    current_app.logger.info("Outlook: Using stub mode (forced by USE_SYNTHETIC_DATA setting)")
+                else:
+                    current_app.logger.info("Outlook: Not configured (no OAuth credentials)")
             else:
-                current_app.logger.info("Outlook: Not configured (no OAuth credentials)")
-        else:
-            current_app.logger.info("Outlook: OAuth integration enabled")
+                current_app.logger.info("Outlook: OAuth integration enabled")
+        except RuntimeError:
+            pass
 
     def _get_access_token(self):
         if not self.enabled:
