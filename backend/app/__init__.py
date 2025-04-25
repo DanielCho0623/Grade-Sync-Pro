@@ -13,7 +13,14 @@ def create_app(config_name='default'):
 
     db.init_app(app)
     jwt.init_app(app)
-    CORS(app)
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": ["http://localhost:3000", "http://localhost:5001"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "expose_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        }
+    })
 
     from app.routes.auth import auth_bp
     from app.routes.courses import courses_bp
