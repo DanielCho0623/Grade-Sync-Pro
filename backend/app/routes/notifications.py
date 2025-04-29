@@ -13,7 +13,7 @@ notifications_bp = Blueprint('notifications', __name__)
 @notifications_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_notifications():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     notification = Notification.query.filter_by(
         id=notification_id,
         user_id=user_id
@@ -33,7 +33,7 @@ def get_notifications():
 @notifications_bp.route('/send-grade-alert/<int:course_id>', methods=['POST'])
 @jwt_required()
 def send_grade_alert(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get(user_id)
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
@@ -94,7 +94,7 @@ def send_grade_alert(course_id):
 @notifications_bp.route('/auto-check', methods=['POST'])
 @jwt_required()
 def auto_check_grades():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get(user_id)
     courses = Course.query.filter_by(user_id=user_id).all()
 

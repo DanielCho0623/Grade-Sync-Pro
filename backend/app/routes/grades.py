@@ -10,7 +10,7 @@ grades_bp = Blueprint('grades', __name__)
 @grades_bp.route('/assignment/<int:assignment_id>', methods=['POST'])
 @jwt_required()
 def add_or_update_grade(assignment_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     assignment = Assignment.query.join(Course).filter(
         Assignment.id == assignment_id,
@@ -28,7 +28,7 @@ def add_or_update_grade(assignment_id):
 @grades_bp.route('/assignment/<int:assignment_id>', methods=['DELETE'])
 @jwt_required()
 def delete_grade(assignment_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 

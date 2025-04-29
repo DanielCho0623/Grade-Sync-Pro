@@ -13,7 +13,7 @@ courses_bp = Blueprint('courses', __name__)
 @courses_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_courses():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     courses = Course.query.filter_by(user_id=user_id).all()
 
     return jsonify({
@@ -23,7 +23,7 @@ def get_courses():
 @courses_bp.route('/import-synthetic', methods=['POST'])
 @jwt_required()
 def import_synthetic_courses():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     brightspace = BrightspaceService()
     synthetic_courses = brightspace.get_courses(user_id)
@@ -113,7 +113,7 @@ def import_synthetic_courses():
 @courses_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_course():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
 
     if not data.get('course_code') or not data.get('course_name'):
@@ -140,7 +140,7 @@ def create_course():
 @courses_bp.route('/<int:course_id>', methods=['GET'])
 @jwt_required()
 def get_course(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -153,7 +153,7 @@ def get_course(course_id):
 @courses_bp.route('/<int:course_id>', methods=['PUT'])
 @jwt_required()
 def update_course(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -182,7 +182,7 @@ def update_course(course_id):
 @courses_bp.route('/<int:course_id>', methods=['DELETE'])
 @jwt_required()
 def delete_course(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -196,7 +196,7 @@ def delete_course(course_id):
 @courses_bp.route('/<int:course_id>/sync', methods=['POST'])
 @jwt_required()
 def sync_course(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -254,7 +254,7 @@ def sync_course(course_id):
 @courses_bp.route('/<int:course_id>/calculate', methods=['GET'])
 @jwt_required()
 def calculate_course_grade(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -267,7 +267,7 @@ def calculate_course_grade(course_id):
 @courses_bp.route('/<int:course_id>/grade-needed', methods=['GET'])
 @jwt_required()
 def calculate_grade_needed(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -281,7 +281,7 @@ def calculate_grade_needed(course_id):
 @courses_bp.route('/<int:course_id>/weights', methods=['POST'])
 @jwt_required()
 def add_syllabus_weight(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -319,7 +319,7 @@ def add_syllabus_weight(course_id):
 @courses_bp.route('/<int:course_id>/weights/<int:weight_id>', methods=['DELETE'])
 @jwt_required()
 def delete_syllabus_weight(course_id, weight_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -338,7 +338,7 @@ def delete_syllabus_weight(course_id, weight_id):
 @courses_bp.route('/<int:course_id>/assignments', methods=['POST'])
 @jwt_required()
 def add_assignment(course_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
@@ -370,7 +370,7 @@ def add_assignment(course_id):
 @courses_bp.route('/<int:course_id>/assignments/<int:assignment_id>', methods=['DELETE'])
 @jwt_required()
 def delete_assignment(course_id, assignment_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     course = Course.query.filter_by(id=course_id, user_id=user_id).first()
 
     if not course:
