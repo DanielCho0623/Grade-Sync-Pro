@@ -25,10 +25,14 @@ function Dashboard() {
     try {
       const response = await coursesAPI.getCourses();
 <<<<<<< HEAD
+<<<<<<< HEAD
       setCourses(response.data.courses);
 =======
       setCourses(response.data);
 >>>>>>> 191e1da (create course dashboard)
+=======
+      setCourses(response.data.courses);
+>>>>>>> 7bd7713 (fix dashboard courses data)
     } catch (err) {
       setError('Failed to load courses');
     } finally {
