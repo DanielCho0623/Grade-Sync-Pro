@@ -14,6 +14,18 @@ notifications_bp = Blueprint('notifications', __name__)
 @jwt_required()
 def get_notifications():
     user_id = int(get_jwt_identity())
+    notifications = Notification.query.filter_by(user_id=user_id).order_by(
+        Notification.created_at.desc()
+    ).all()
+
+    return jsonify({
+        'notifications': [n.to_dict() for n in notifications]
+    }), 200
+
+@notifications_bp.route('/<int:notification_id>/read', methods=['PUT'])
+@jwt_required()
+def mark_as_read(notification_id):
+    user_id = int(get_jwt_identity())
     notification = Notification.query.filter_by(
         id=notification_id,
         user_id=user_id
