@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker
 # Add the app directory to the path
 sys.path.insert(0, os.path.dirname(__file__))
 
+<<<<<<< HEAD
 from application import create_app, db
 from application.models.user import User
 from application.models.course import Course
@@ -16,6 +17,15 @@ from application.models.assignment import Assignment
 from application.models.grade import Grade
 from application.models.syllabus_weight import SyllabusWeight
 from application.models.notification import Notification
+=======
+from app import create_app, db
+from app.models.user import User
+from app.models.course import Course
+from app.models.assignment import Assignment
+from app.models.grade import Grade
+from app.models.syllabus_weight import SyllabusWeight
+from app.models.notification import Notification
+>>>>>>> 94220e7 (migrate from sqlite to postgresql)
 
 def migrate_data():
     # Create SQLite engine to read from
