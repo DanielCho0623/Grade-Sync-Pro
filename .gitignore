@@ -1,9 +1,13 @@
 frontend/.env
 frontend/package-lock.json
 <<<<<<< HEAD
+<<<<<<< HEAD
 backend/temp_credentials.json
 frontend/frontend.log
 backend/backend.log
 *.log
 =======
 >>>>>>> 5aa3e2d (restore function implementations)
+=======
+backend/temp_credentials.json
+>>>>>>> 53d43b7 (add temp_credentials to gitignore)
