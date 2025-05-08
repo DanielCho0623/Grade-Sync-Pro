@@ -6,8 +6,11 @@ backend/temp_credentials.json
 frontend/frontend.log
 backend/backend.log
 *.log
+<<<<<<< HEAD
 =======
 >>>>>>> 5aa3e2d (restore function implementations)
 =======
 backend/temp_credentials.json
 >>>>>>> 53d43b7 (add temp_credentials to gitignore)
+=======
+>>>>>>> 7e0c8e7 (add log files to gitignore)
