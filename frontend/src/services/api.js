@@ -3,6 +3,7 @@ import axios from 'axios';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 =======
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
@@ -13,6 +14,9 @@ const API_URL = process.env.REACT_APP_API_URL || 'http:
 =======
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 >>>>>>> 5aa3e2d (restore function implementations)
+=======
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
+>>>>>>> 9a351ea (update api url to port 5001)
 
 const api = axios.create({
   baseURL: API_URL,
