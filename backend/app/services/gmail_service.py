@@ -15,10 +15,12 @@ class GmailService:
         self.refresh_token = os.getenv('GMAIL_REFRESH_TOKEN', '')
         self.redirect_uri = os.getenv('GMAIL_REDIRECT_URI', 'http://localhost:5001/api/auth/gmail/callback')
 
-        force_synthetic = os.getenv('USE_SYNTHETIC_DATA', 'true').lower() == 'true'
+        synthetic_value = os.getenv('USE_SYNTHETIC_DATA', 'true')
+        force_synthetic = synthetic_value.lower() == 'true'
         self.enabled = not force_synthetic and all([self.client_id, self.client_secret, self.refresh_token])
 
         try:
+            current_app.logger.info(f"Gmail: USE_SYNTHETIC_DATA={synthetic_value}, force_synthetic={force_synthetic}, enabled={self.enabled}")
             if not self.enabled:
                 if force_synthetic:
                     current_app.logger.info("Gmail: Using stub mode (forced by USE_SYNTHETIC_DATA setting)")

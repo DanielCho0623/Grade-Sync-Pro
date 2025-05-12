@@ -77,6 +77,8 @@ class DevelopmentConfig(Config):
     ALERT_EMAIL = os.getenv('ALERT_EMAIL', '')
     GRADE_THRESHOLD = float(os.getenv('GRADE_THRESHOLD', '85.0'))
 
+    USE_SYNTHETIC_DATA = os.getenv('USE_SYNTHETIC_DATA', 'false').lower() == 'true'
+
 class DevelopmentConfig(Config):
 <<<<<<< HEAD
     """Development configuration"""

@@ -10,10 +10,12 @@ class OutlookService:
         self.tenant_id = os.getenv('OUTLOOK_TENANT_ID', 'common')
         self.redirect_uri = os.getenv('OUTLOOK_REDIRECT_URI', 'http://localhost:5001/api/auth/outlook/callback')
 
-        force_synthetic = os.getenv('USE_SYNTHETIC_DATA', 'true').lower() == 'true'
+        synthetic_value = os.getenv('USE_SYNTHETIC_DATA', 'true')
+        force_synthetic = synthetic_value.lower() == 'true'
         self.enabled = not force_synthetic and all([self.client_id, self.client_secret, self.refresh_token])
 
         try:
+            current_app.logger.info(f"Outlook: USE_SYNTHETIC_DATA={synthetic_value}, force_synthetic={force_synthetic}, enabled={self.enabled}")
             if not self.enabled:
                 if force_synthetic:
                     current_app.logger.info("Outlook: Using stub mode (forced by USE_SYNTHETIC_DATA setting)")
