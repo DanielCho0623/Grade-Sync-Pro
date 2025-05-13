@@ -13,9 +13,14 @@ msal==1.26.0
 pytest==7.4.3
 pytest-flask==1.3.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 pytest-cov==4.1.0
 flake8==7.0.0
 =======
 >>>>>>> b083b2d (set up flask backend with postgresql)
+=======
+pytest-cov==4.1.0
+flake8==7.0.0
+>>>>>>> 7530c7a (implement ci/cd pipeline)
 gunicorn==21.2.0
 bcrypt==4.1.2

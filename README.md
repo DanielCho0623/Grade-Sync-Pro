@@ -48,6 +48,8 @@ Get email if grade drops below target
 =======
 # GradeSync Pro
 
+[![CI/CD Pipeline](https://github.com/DanielCho0623/GradeSync-Pro/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/DanielCho0623/GradeSync-Pro/actions/workflows/ci-cd.yml)
+
 A full-stack web application for grade tracking and monitoring with Brightspace integration, syllabus-defined weights, and real-time email notifications.
 
 ## Features
@@ -85,9 +87,10 @@ A full-stack web application for grade tracking and monitoring with Brightspace 
 - Microsoft Graph API (Outlook)
 
 ### DevOps
-- GitHub Actions for CI/CD
-- testing
-- Docker support
+- GitHub Actions CI/CD pipeline
+- Automated testing (pytest for backend, Jest for frontend)
+- Code quality checks (flake8 linting)
+- Automated builds and deployment
 
 ## Project Structure
 
@@ -324,7 +327,7 @@ Body: {
 ### Backend Tests
 ```bash
 cd backend
-pytest tests/ -v
+pytest tests/ -v --cov=app
 ```
 
 ### Frontend Tests
@@ -332,6 +335,21 @@ pytest tests/ -v
 cd frontend
 npm test
 ```
+
+### Running All Tests
+The CI/CD pipeline automatically runs all tests on every push and pull request. Tests include:
+- Backend unit tests (pytest)
+- Frontend component tests (Jest + React Testing Library)
+- Code quality checks (flake8 linting)
+- Build verification
+
+### Code Coverage
+Backend tests include code coverage reports. To generate a detailed coverage report:
+```bash
+cd backend
+pytest tests/ -v --cov=app --cov-report=html
+```
+Then open `htmlcov/index.html` in your browser.
 
 ## Contributing
 
