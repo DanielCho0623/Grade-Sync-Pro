@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -13,9 +14,27 @@ def create_app(config_name='default'):
 
     db.init_app(app)
     jwt.init_app(app)
+
+    # CORS configuration - allows both local and production origins
+    allowed_origins = [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "http://localhost:5001"
+    ]
+
+    # Add production frontend URL from environment variable
+    frontend_url = os.getenv('FRONTEND_URL')
+    if frontend_url:
+        allowed_origins.append(frontend_url)
+        # Also allow the URL without trailing slash and with https
+        allowed_origins.append(frontend_url.rstrip('/'))
+        if frontend_url.startswith('http://'):
+            allowed_origins.append(frontend_url.replace('http://', 'https://'))
+
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://localhost:5001"],
+            "origins": allowed_origins,
             "allow_headers": ["Content-Type", "Authorization"],
             "expose_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
