@@ -67,16 +67,8 @@ def create_app(config_name='default'):
     app.register_blueprint(notifications_bp, url_prefix='/api/notifications')
 
     with app.app_context():
-<<<<<<< HEAD
-<<<<<<< HEAD
         # Import models to register them with SQLAlchemy before creating tables
         from application import models
-=======
->>>>>>> d3528df (rename app directory to application)
-=======
-        # Import models to register them with SQLAlchemy before creating tables
-        from application import models
->>>>>>> 6cffb1b (ensure db tables created on deploy)
         db.create_all()
 
     return app

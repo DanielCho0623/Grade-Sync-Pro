@@ -19,11 +19,4 @@ build/
 credentials/
 *.db
 *.sqlite
-<<<<<<< HEAD
-<<<<<<< HEAD
 exchange_code.py
-=======
->>>>>>> b083b2d (set up flask backend with postgresql)
-=======
-exchange_code.py
->>>>>>> 78d2cb3 (add oauth script to gitignore)

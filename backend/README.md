@@ -9,15 +9,7 @@ Flask-based RESTful API server for GradeSync Pro.
 - JWT-based authentication
 - Brightspace API integration
 - Email notifications (Gmail & Outlook)
-<<<<<<< HEAD
-<<<<<<< HEAD
-- grade calculations
-=======
 - Automated grade calculations
->>>>>>> c16e90d (add documentation)
-=======
-- grade calculations
->>>>>>> 4990274 (clean up code)
 - Comprehensive test coverage
 
 ## API Endpoints
