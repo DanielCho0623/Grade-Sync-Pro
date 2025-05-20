@@ -1,5 +1,6 @@
 [phases.setup]
 <<<<<<< HEAD
+<<<<<<< HEAD
 nixPkgs = ["python311", "postgresql"]
 
 [phases.install]
@@ -16,10 +17,24 @@ cmds = []
 cmd = ". /opt/venv/bin/activate && gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 2"
 =======
 nixPkgs = ['python311', 'postgresql']
+=======
+nixPkgs = ["python311", "postgresql"]
+>>>>>>> b56e75f (add nixpacks config for railway)
 
 [phases.install]
-cmds = ['pip install -r requirements.txt']
+cmds = [
+  "python -m venv /opt/venv",
+  ". /opt/venv/bin/activate && pip install --upgrade pip",
+  ". /opt/venv/bin/activate && pip install -r requirements.txt"
+]
+
+[phases.build]
+cmds = []
 
 [start]
+<<<<<<< HEAD
 cmd = 'gunicorn app:app --bind 0.0.0.0:$PORT'
 >>>>>>> dfb0b0a (add deployment configs)
+=======
+cmd = ". /opt/venv/bin/activate && gunicorn app:app --bind 0.0.0.0:$PORT"
+>>>>>>> b56e75f (add nixpacks config for railway)
