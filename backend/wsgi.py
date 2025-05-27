@@ -1,5 +1,6 @@
 """
 WSGI entry point for Railway deployment.
+<<<<<<< HEAD
 This file imports the Flask app and exposes it for gunicorn.
 Updated: 2025-12-13
 """
@@ -15,6 +16,11 @@ from application import create_app
 # Create app with production config
 config_name = os.getenv('FLASK_ENV', 'production')
 app = create_app(config_name)
+=======
+This file imports the Flask app from app.py and exposes it for gunicorn.
+"""
+from app import app
+>>>>>>> 8df0d54 (add wsgi entry point)
 
 if __name__ == "__main__":
     app.run()

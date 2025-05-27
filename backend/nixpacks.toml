@@ -15,6 +15,7 @@ cmds = []
 
 [start]
 <<<<<<< HEAD
+<<<<<<< HEAD
 cmd = ". /opt/venv/bin/activate && gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 2"
 =======
 nixPkgs = ['python311', 'postgresql']
@@ -42,3 +43,6 @@ cmd = ". /opt/venv/bin/activate && gunicorn app:app --bind 0.0.0.0:$PORT"
 =======
 cmd = ". /opt/venv/bin/activate && python -m gunicorn app:app --bind 0.0.0.0:$PORT --preload"
 >>>>>>> 8c065a3 (use python -m gunicorn)
+=======
+cmd = ". /opt/venv/bin/activate && gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 2"
+>>>>>>> 8df0d54 (add wsgi entry point)
