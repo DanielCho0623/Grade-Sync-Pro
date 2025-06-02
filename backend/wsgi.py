@@ -24,6 +24,7 @@ from app import app
 >>>>>>> 8df0d54 (add wsgi entry point)
 =======
 This file imports the Flask app and exposes it for gunicorn.
+Updated: 2025-12-13
 """
 import sys
 import os
