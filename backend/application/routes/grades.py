@@ -30,18 +30,18 @@ def add_or_update_grade(assignment_id):
 def delete_grade(assignment_id):
     user_id = int(get_jwt_identity())
 
-    course = Course.query.filter_by(id=course_id, user_id=user_id).first()
+    assignment = Assignment.query.join(Course).filter(
+        Assignment.id == assignment_id,
+        Course.user_id == user_id
+    ).first()
 
-    if not course:
-        return jsonify({'error': 'Course not found'}), 404
+    if not assignment:
+        return jsonify({'error': 'Assignment not found'}), 404
 
-    grades = []
-    for assignment in course.assignments:
-        if assignment.grade:
-            grade_data = assignment.grade.to_dict()
-            grade_data['assignment_name'] = assignment.name
-            grade_data['assignment_category'] = assignment.category
-            grade_data['max_points'] = assignment.max_points
-            grades.append(grade_data)
+    if not assignment.grade:
+        return jsonify({'error': 'No grade to delete'}), 404
 
-    return jsonify(grades), 200
+    db.session.delete(assignment.grade)
+    db.session.commit()
+
+    return jsonify({'message': 'Grade deleted successfully'}), 200
