@@ -32,8 +32,8 @@ import os
 # Add current directory to path to ensure proper imports
 sys.path.insert(0, os.path.dirname(__file__))
 
-# Import app from app.py (not the app/ package)
-from app import app as application
+# Import app from application.py (not the app/ package)
+from application import app as application
 
 # Alias for gunicorn
 app = application

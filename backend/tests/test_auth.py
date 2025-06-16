@@ -1,11 +1,16 @@
 import pytest
 <<<<<<< HEAD
+<<<<<<< HEAD
 from application import create_app, db
 from application.models.user import User
 =======
 from app import create_app, db
 from app.models.user import User
 >>>>>>> 22c8b51 (backend deployment config and tests)
+=======
+from application import create_app, db
+from application.models.user import User
+>>>>>>> d3528df (rename app directory to application)
 
 @pytest.fixture
 def app():
