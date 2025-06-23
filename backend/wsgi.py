@@ -32,12 +32,18 @@ import os
 # Add current directory to path to ensure proper imports
 sys.path.insert(0, os.path.dirname(__file__))
 
-# Import app from application.py (not the app/ package)
-from application import app as application
+# Import create_app factory
+from application import create_app
 
+<<<<<<< HEAD
 # Alias for gunicorn
 app = application
 >>>>>>> 5d772cd (improve wsgi imports)
+=======
+# Create app with production config
+config_name = os.getenv('FLASK_ENV', 'production')
+app = create_app(config_name)
+>>>>>>> 6cffb1b (ensure db tables created on deploy)
 
 if __name__ == "__main__":
-    application.run()
+    app.run()

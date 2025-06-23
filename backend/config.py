@@ -18,16 +18,22 @@ class Config:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6cffb1b (ensure db tables created on deploy)
     # Railway uses postgres:// but SQLAlchemy 1.4+ requires postgresql://
     database_url = os.getenv('DATABASE_URL', 'postgresql://localhost/gradesync')
     if database_url.startswith('postgres://'):
         database_url = database_url.replace('postgres://', 'postgresql://', 1)
     SQLALCHEMY_DATABASE_URI = database_url
+<<<<<<< HEAD
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 =======
     # Database
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://localhost/gradesync')
+=======
+>>>>>>> 6cffb1b (ensure db tables created on deploy)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Brightspace API
