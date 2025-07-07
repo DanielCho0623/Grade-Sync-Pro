@@ -18,9 +18,13 @@ function CourseDetail() {
   useEffect(() => {
     loadCourse();
 <<<<<<< HEAD
+<<<<<<< HEAD
     // eslint-disable-next-line react-hooks/exhaustive-deps
 =======
 >>>>>>> 7cd308a (implement course management ui)
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 661277e (fix eslint warnings in production build)
   }, [id]);
 
   const loadCourse = async () => {
