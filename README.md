@@ -48,8 +48,6 @@ Get email if grade drops below target
 =======
 # GradeSync Pro
 
-[![CI/CD Pipeline](https://github.com/DanielCho0623/GradeSync-Pro/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/DanielCho0623/GradeSync-Pro/actions/workflows/ci-cd.yml)
-
 A full-stack web application for grade tracking and monitoring with Brightspace integration, syllabus-defined weights, and real-time email notifications.
 
 ## Features
