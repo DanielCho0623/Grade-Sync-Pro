@@ -48,146 +48,40 @@ Get email if grade drops below target
 =======
 # GradeSync Pro
 
-A full-stack web application for grade tracking and monitoring with Brightspace integration, syllabus-defined weights, and real-time email notifications.
+Track your grades and get email alerts when they drop.
 
 ## Features
 
-- **Full-Stack Architecture**: React.js frontend with Python Flask backend and PostgreSQL database
-- **JWT Authentication**: Secure user authentication and authorization
-- **Brightspace Integration**: Sync courses, assignments, and grades from Brightspace (with synthetic data fallback)
-- **grade Calculation**: Calculate final grades based on syllabus-defined category weights
-- **Real-Time Monitoring**: Track grade progress and project final grades
-- **Email Notifications**: alerts via Gmail and Outlook APIs when grades fall below targets
-- **Course Management**: Add courses, define syllabus weights, manage assignments
-- **Grade Analytics**: View detailed grade breakdowns by category
-- **Responsive UI**: Modern, intuitive interface built with React
+- Add courses and assignments
+- Calculate final grades with syllabus weights
+- Get email alerts when grades are low
+- Sync with Brightspace
 
-## Tech Stack
+## Tech
 
-### Frontend
-- React.js 18.2
-- React Router for navigation
-- Axios for API calls
-- Recharts for data visualization
-- Deployed on Vercel
+**Frontend:** React + Vercel
+**Backend:** Flask + PostgreSQL + Railway
+**APIs:** Brightspace, Gmail
 
-### Backend
-- Python 3.11
-- Flask 3.0 web framework
-- PostgreSQL database
-- SQLAlchemy ORM
-- JWT authentication
-- Deployed on Railway
+**Live:** [grade-sync-pro.vercel.app](https://grade-sync-pro.vercel.app)
 
-### APIs & Integrations
-- Brightspace API
-- Gmail API (OAuth 2.0)
-- Microsoft Graph API (Outlook)
+## Setup
 
-### DevOps
-- GitHub Actions CI/CD pipeline
-- Automated testing (pytest for backend, Jest for frontend)
-- Code quality checks (flake8 linting)
-- Automated builds and deployment
-
-## Project Structure
-
-```
-GradeSync-Pro/
-├── backend/
-│   ├── app/
-│   │   ├── models/          # Database models
-│   │   ├── routes/          # API endpoints
-│   │   ├── services/        # External service integrations
-│   │   └── utils/           # Utility functions
-│   ├── tests/               # Backend tests
-│   ├── config.py            # Configuration
-│   ├── requirements.txt     # Python dependencies
-│   └── app.py              # Application entry point
-├── frontend/
-│   ├── public/             # Static files
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── contexts/       # React contexts
-│   │   ├── pages/          # Page components
-│   │   └── services/       # API services
-│   └── package.json        # Node dependencies
-└── .github/
-    └── workflows/          # CI/CD pipelines
-```
-
-## Setup Instructions
-
-### Prerequisites
-- Python 3.11+
-- Node.js 18+
-- PostgreSQL 15+
-- Gmail/Outlook API credentials (optional)
-- Brightspace API credentials (optional)
-
-### Backend Setup
-
-1. Navigate to the backend directory:
+**Backend:**
 ```bash
 cd backend
-```
-
-2. Create a virtual environment:
-```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
+source venv/bin/activate
 pip install -r requirements.txt
-```
-
-4. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-5. Initialize the database:
-```bash
-python
->>> from app import create_app, db
->>> app = create_app()
->>> with app.app_context():
-...     db.create_all()
-```
-
-6. Run the development server:
-```bash
 python app.py
-```
 
-The backend API will be available at `http://localhost:5000`
+Frontend:
 
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-```bash
 cd frontend
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
-
-3. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your API URL
-```
-
-4. Run the development server:
-```bash
 npm start
-```
 
+<<<<<<< HEAD
 The frontend will be available at `http://localhost:3000`
 
 ## API Documentation
@@ -371,3 +265,11 @@ For questions or support, please open an issue on GitHub.
 - Integrates with Brightspace, Gmail, and Outlook APIs
 - Deployed on Railway and Vercel
 >>>>>>> c16e90d (add documentation)
+=======
+How it works
+Add your courses
+Set grade weights (homework 30%, exams 40%, etc)
+Add assignments and grades
+App calculates your final grade
+Get email if grade drops below target
+>>>>>>> afd3d24 (simplify readme)
