@@ -23,19 +23,10 @@
       "dest": "/manifest.json"
     },
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1e74755 (add railway and vercel deployment config)
       "src": "/logo(.*).png",
       "dest": "/logo$1.png"
     },
     {
-<<<<<<< HEAD
-=======
->>>>>>> dfb0b0a (add deployment configs)
-=======
->>>>>>> 1e74755 (add railway and vercel deployment config)
       "src": "/(.*)",
       "dest": "/index.html"
     }
