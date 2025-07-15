@@ -24,15 +24,7 @@ function Dashboard() {
   const loadCourses = async () => {
     try {
       const response = await coursesAPI.getCourses();
-<<<<<<< HEAD
-<<<<<<< HEAD
       setCourses(response.data.courses);
-=======
-      setCourses(response.data);
->>>>>>> 191e1da (create course dashboard)
-=======
-      setCourses(response.data.courses);
->>>>>>> 7bd7713 (fix dashboard courses data)
     } catch (err) {
       setError('Failed to load courses');
     } finally {
@@ -182,14 +174,7 @@ function CourseCard({ course, navigate, getGradeClass }) {
 
   useEffect(() => {
     loadGradeData();
-<<<<<<< HEAD
-<<<<<<< HEAD
     // eslint-disable-next-line react-hooks/exhaustive-deps
-=======
->>>>>>> 191e1da (create course dashboard)
-=======
-    // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 661277e (fix eslint warnings in production build)
   }, []);
 
   const loadGradeData = async () => {
